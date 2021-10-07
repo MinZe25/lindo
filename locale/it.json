@@ -92,8 +92,11 @@
             "header": "Gruppi"
           },
           "accounts": {
-            "header": "Accounts"
-          }
+            "header": "Conti"
+          },
+          "advanced": {
+            "header": "Avanzati"
+          },
         },
         "about": {
           "title": "Su",

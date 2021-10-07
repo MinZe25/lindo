@@ -94,7 +94,10 @@
           },
           "accounts": {
             "header": "Cuentas"
-          }
+          },
+          "advanced": {
+            "header": "Avanzado"
+          },
         },
         "about": {
           "title": "Acerca",

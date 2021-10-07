@@ -93,7 +93,10 @@
           },
           "accounts": {
             "header": "Hesaplar"
-          }
+          },
+          "advanced": {
+            "header": "Ileri"
+          },
         },
         "about": {
           "title": "Hakkında",

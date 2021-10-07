@@ -93,7 +93,10 @@
           },
           "accounts": {
             "header": "Accounts"
-          }
+          },
+          "advanced": {
+            "header": "advanced"
+          },
         },
         "about": {
           "title": "About",

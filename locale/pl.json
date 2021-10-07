@@ -93,7 +93,10 @@
           },
           "accounts": {
             "header": "Konta"
-          }
+          },
+          "advanced": {
+            "header": "Zaawansowane"
+          },
         },
         "about": {
           "title": "O nas",
