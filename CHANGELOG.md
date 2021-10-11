@@ -1,6 +1,13 @@
 ## ⚠ ATTENTION, VÉRIFIEZ QUE VOUS TÉLÉCHARGEZ LINDO DEPUIS LINDO-APP.COM
 ## ⚠ CERTAINS SITES MALVEILLANTS INSTALLERONT UN VIRUS SUR VOTRE ORDINATEUR
 
+## [2.6.3] - 2021-10-12
+
+### Ajouts
+- Raccourci pour l'historique des messages envoyés
+
+### Correctifs
+- Valeur par défaut pour l'affichage de l'xp des groupes de monstres
 
 ## [2.6.2] - 2021-09-24
 
