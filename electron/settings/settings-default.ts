@@ -12,6 +12,7 @@ export const SettingsDefault: SettingsInterface = {
         general: {
             hidden_shop: false,
             hidden_tabs: false,
+            full_screen: false,
             stay_connected: true,
             resolution: {
                 x: 1280,
@@ -156,7 +157,6 @@ export const SettingsDefault: SettingsInterface = {
                 jobsxp: false,
                 estimator: true,
                 fightchronometer: true,
-                hidden_mount: false,
                 party_info_pp: false,
                 party_info_lvl: false,
                 zaapsearchfilter: true,
@@ -166,6 +166,8 @@ export const SettingsDefault: SettingsInterface = {
                 party_member_on_map: true,
                 monster_tooltip: false,
                 monster_tooltip_shortcut: '',
+                challpercent: false,
+                verticaltimeline: false
             },
             auto_group: {
                 active: false,

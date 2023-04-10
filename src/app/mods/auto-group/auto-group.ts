@@ -59,7 +59,7 @@ export class AutoGroup extends Mod {
         try {
             setTimeout(() => {
                 if (this.params.leader == this.wGame.gui.playerData.characterBaseInformations.name && this.params.members) {
-                    Logger.info('start master party');
+                  //  Logger.info('start master party');
 
                     const idInt = setInterval(() => {
                         this.masterParty(this.params.members.split(';'));
@@ -703,6 +703,15 @@ export class AutoGroup extends Mod {
     private log(msg: string): void {
         // Logger.info(this.wGame.gui.playerData.characterBaseInformations.name + ': ' + msg);
     }
+    protected getRandomTime(min: number, max: number): number {
+        if (this.params.disable_timer) {
+            return 0;
+        } else {
+          return  super.getRandomTime(min, max);
+           
+        }
+    }
+
 
     private static objectToString(obj: any): string {
         let str = '{ ';

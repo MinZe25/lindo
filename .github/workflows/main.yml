@@ -8,16 +8,17 @@ on:
 jobs:
 
   #TODO
-  #https://github.com/ad-m/github-push-action
   #on tag, update package.json, create release then "push" the package.json updated
   release-win:
     name: "Release windows"
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Checkout
+      - name: Build
         uses: actions/checkout@v2
-      #utiliser node v14 ? https://github.com/actions/setup-node
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
       - run: npm i
       - run: npm run build:prod
       - run: docker run -v ${PWD}:/project electronuserland/builder:wine /bin/bash -c "npm run release:win"
@@ -41,9 +42,11 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Checkout
+      - name: Build
         uses: actions/checkout@v2
-      #utiliser node v14 ? https://github.com/actions/setup-node
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
       - run: npm i
       - run: npm run build:prod
       - run: npm run release:linux
@@ -65,9 +68,11 @@ jobs:
     runs-on: macos-10.15
 
     steps:
-      - name: Checkout
+      - name: Build
         uses: actions/checkout@v2
-      #utiliser node v14 ? https://github.com/actions/setup-node
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
       - run: npm i
       - run: npm run build:prod
       - name: release mac
@@ -97,6 +102,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
       #update pachage.json?
       - run: npm i
       #on dowload tous les artifacts

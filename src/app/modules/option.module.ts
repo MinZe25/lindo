@@ -485,6 +485,7 @@ export namespace Option {
     export class General {
 
         private _hidden_shop: boolean;
+        private _full_screen: boolean;
         private _hidden_tabs: boolean;
         private _resolution: {
             x: boolean;
@@ -503,6 +504,15 @@ export namespace Option {
         set hidden_shop(hidden_shop: boolean) {
             this.settingsProvider.write('option.general.hidden_shop', hidden_shop);
             this._hidden_shop = hidden_shop;
+        }
+
+        get full_screen(): boolean {
+            return this._full_screen;
+        }
+
+        set full_screen(full_screen: boolean) {
+            this.settingsProvider.write('option.general.full_screen', full_screen);
+            this._full_screen = full_screen;
         }
 
         get user_agent(): string {
@@ -571,6 +581,7 @@ export namespace Option {
         constructor(private settingsProvider: SettingsProvider) {
             this.user_agent = this.settingsProvider.read('option.general.user_agent');
             this.hidden_shop = this.settingsProvider.read('option.general.hidden_shop');
+            this.full_screen = this.settingsProvider.read('option.general.full_screen');
             this.hidden_tabs = this.settingsProvider.read('option.general.hidden_tabs');
             this.resolution = this.settingsProvider.read('option.general.resolution');
             this.local_content = this.settingsProvider.read('option.general.local_content');
@@ -688,6 +699,7 @@ export namespace Option {
 
     export namespace VIP {
         export class General {
+            private _challpercent: boolean;
             private _disable_inactivity: boolean;
             private _health_bar: boolean;
             private _health_bar_shortcut: string;
@@ -704,6 +716,7 @@ export namespace Option {
             private _harvest_indicator: boolean;
             private _monster_tooltip: boolean;
             private _monster_tooltip_shortcut: string;
+            private _verticaltimeline: boolean;
 
             get party_info_pp():boolean{
                 return this._party_info_pp;
@@ -794,7 +807,7 @@ export namespace Option {
                 this.settingsProvider.write('option.vip.general.health_bar_shortcut', health_bar_shortcut);
                 this._health_bar_shortcut = health_bar_shortcut;
             }
-            
+
             get show_resources(): boolean {
                 return this._show_resources;
             }
@@ -830,7 +843,7 @@ export namespace Option {
                 this.settingsProvider.write('option.vip.general.harvest_indicator', harvest_indicator);
                 this._harvest_indicator = harvest_indicator;
             }
-            
+
             get monster_tooltip(): boolean {
                 return this._monster_tooltip;
             }
@@ -849,6 +862,24 @@ export namespace Option {
                 this._monster_tooltip_shortcut = monster_tooltip_shortcut;
             }
 
+            get verticaltimeline(): boolean {
+                return this._verticaltimeline;
+            }
+
+            set verticaltimeline(verticaltimeline: boolean) {
+                this.settingsProvider.write('option.vip.general.verticaltimeline', verticaltimeline);
+                this._verticaltimeline = verticaltimeline;
+            }
+
+            get challpercent(): boolean {
+                return this._challpercent;
+            }
+
+            set challpercent(challpercent: boolean) {
+                this.settingsProvider.write('option.vip.general.challpercent', challpercent);
+                this._challpercent = challpercent;
+            }
+
             constructor(private settingsProvider: SettingsProvider) {
                 this.disable_inactivity = this.settingsProvider.read('option.vip.general.disable_inactivity');
                 this.health_bar = this.settingsProvider.read('option.vip.general.health_bar');
@@ -865,7 +896,9 @@ export namespace Option {
                 this.party_member_on_map = this.settingsProvider.read('option.vip.general.party_member_on_map');
                 this.harvest_indicator = this.settingsProvider.read('option.vip.general.harvest_indicator');
                 this._monster_tooltip = this.settingsProvider.read('option.vip.general.monster_tooltip');
-                this._monster_tooltip_shortcut = this.settingsProvider.read('option.vip.general.monster_tooltip_shortcut');
+                this.monster_tooltip_shortcut = this.settingsProvider.read('option.vip.general.monster_tooltip_shortcut');
+                this.verticaltimeline = this.settingsProvider.read('option.vip.general.verticaltimeline');
+                this.challpercent = this.settingsProvider.read('option.vip.general.challpercent');
             }
         }
 
@@ -874,6 +907,7 @@ export namespace Option {
             private _leader: string;
             private _members: string;
             private _follow_leader: boolean;
+            private _disable_timer: boolean;
             private _ready: boolean;
             private _fight: boolean;
             private _follow_on_map: boolean;
@@ -910,10 +944,22 @@ export namespace Option {
                 return this._follow_leader;
             }
 
+
             set follow_leader(follow_leader: boolean) {
                 this.settingsProvider.write('option.vip.auto_group.follow_leader', follow_leader);
                 this._follow_leader = follow_leader;
             }
+
+            get disable_timer(): boolean {
+                return this._disable_timer;
+            }
+
+            set disable_timer(disable_timer: boolean) {
+                this.settingsProvider.write('option.vip.auto_group.disable_timer', disable_timer);
+                this._disable_timer = disable_timer;
+            }
+
+
 
             get ready(): boolean {
                 return this._ready;
@@ -956,6 +1002,7 @@ export namespace Option {
                 this.leader = this.settingsProvider.read('option.vip.auto_group.leader');
                 this.members = this.settingsProvider.read('option.vip.auto_group.members');
                 this.follow_leader = this.settingsProvider.read('option.vip.auto_group.follow_leader');
+                this.disable_timer = this.settingsProvider.read('option.vip.auto_group.disable_timer');
                 this.leader = this.settingsProvider.read('option.vip.auto_group.leader');
                 this.ready = this.settingsProvider.read('option.vip.auto_group.ready');
                 this.fight = this.settingsProvider.read('option.vip.auto_group.fight');
