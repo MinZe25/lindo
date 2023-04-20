@@ -88,6 +88,7 @@ export type GUIEvents = {
 }
 
 export interface GUI extends TypedEmitter<GUIEvents> {
+  openConfirmPopup: (options: any) => void
   _resizeUi: () => void
   isConnected: boolean
   loginScreen: {

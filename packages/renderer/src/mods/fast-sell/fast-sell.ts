@@ -14,6 +14,14 @@ export class FastSell extends Mod {
   private evOnTradeClose?: () => void
   private evTradeOpenStd?: () => void
   private touchended?: boolean
+  private ButtonCreator: any
+  private button: any
+  private inventoryWindow: any
+  private tradeWindow: any
+  private tradeStorageWindow: any
+  private created: boolean = false
+  private originalTradeWindowHeight: any
+  private currentList: any
 
   constructor(wGame: DofusWindow, rootStore: RootStore, LL: TranslationFunctions) {
     super(wGame, rootStore, LL)
@@ -23,8 +31,30 @@ export class FastSell extends Mod {
     this.load()
   }
 
+  initButton() {
+    this.button = new this.ButtonCreator({ className: 'button', text: 'Vender todos los objetos visibles' }, () => {
+      this.currentList = this.getSortedItems()
+      this.wGame.gui.openConfirmPopup({
+        title: 'Venta automática de los objetos visibles',
+        message: '¿Estás seguro de que quieres venderlo todo?',
+        cb: async (accepted: boolean) => {
+          if (accepted) {
+            await this.sellEverything()
+            this.wGame.gui?.chat?._logServerText("<span style ='color:orange'>Venta Terminada !</span>")
+          }
+        }
+      })
+    })
+  }
+
   load() {
     this.init()
+    this.initButton()
+    this.inventoryWindow = this.windowManager.getWindow('tradeInventory')
+    this.tradeWindow = this.windowManager.getWindow('tradeItem')
+    this.tradeStorageWindow = this.windowManager.getWindow('tradeStorage')
+    this.tradeWindow.once('open', this.createButton)
+    this.tradeWindow.on('open', this.onFirstOpenNeedResize)
   }
 
   init() {
@@ -37,13 +67,75 @@ export class FastSell extends Mod {
     }
   }
 
+  async sellEverything() {
+    const uidToSell = this.getSortedItems()
+    for (const uid of uidToSell) {
+      if (this.tradeStorageWindow.isVisible()) {
+        this.tradeWindow.displayItem('sell-bidHouse', this.wGame.gui.playerData.inventory.objects[uid])
+        await this.waitDisplay()
+        while (this.getQtyItems(uid)) {
+          if (!this.tradeStorageWindow.isVisible()) {
+            this.wGame.gui?.chat?._logServerText(
+              '<span style ="color:orange">La fenetre a été fermée, la vente a été interrompue.</span>'
+            )
+            return
+          }
+          if (!this.tradeWindow.isVisible()) {
+            this.wGame.gui?.chat?._logServerText(
+              '<span style ="color:orange">La fenetre a été fermée, la vente a été interrompue.</span>'
+            )
+            return
+          }
+          if (!this.tradeWindow.bidHouseSellerBox.isVisible()) {
+            this.wGame.gui?.chat?._logServerText(
+              '<span style ="color:orange">La fenetre a été fermée, la vente a été interrompue.</span>'
+            )
+            return
+          }
+          if (this.isStorageFull()) {
+            this.wGame.gui?.chat?._logServerText(
+              '<span style ="color:orange">Ton stockage en hdv est plein, la vente a été interrompue.</span>'
+            )
+            return
+          }
+          await this.waitSell()
+          if (this.currentItemPrice > 2) {
+            this.sellCurrentItemAtCurrentPriceForCurrentQuantity()
+          } else {
+            break
+          }
+        }
+      } else {
+        this.wGame.gui?.chat?._logServerText(
+          '<span style ="color:orange">La fenetre a été fermée, la vente a été interrompue.</span>'
+        )
+        return
+      }
+    }
+  }
+
+  isStorageFull() {
+    return this.tradeStorageWindow._itemCount >= this.wGame.gui.playerData.characterBaseInformations.level * 5
+  }
+
+  waitDisplay(time = 300, offset = 50) {
+    return new Promise((resolve) => setTimeout(resolve, Math.random() * offset + time))
+  }
+
   canInit() {
     return this.wGame.document.querySelector('.ExchangeInventoryWindow')
   }
 
+  onFirstOpenNeedResize = () => {
+    if (this.button && this.tradeWindow.bidHouseSellerBox.isVisible()) {
+      this.originalTradeWindowHeight = this.tradeWindow.rootElement.style.height
+      this.tradeWindow.rootElement.style.height = '540px'
+    }
+  }
+
   addMinusOneKamaSellingButton() {
     const tradingWindow = this.sellingWindow
-    const DTButton = (this.wGame.findSingleton('DofusButton', this.wGame) as any).exports
+    this.ButtonCreator = (this.wGame.findSingleton('DofusButton', this.wGame) as any).exports
 
     let sellTimeout: string | number | NodeJS.Timeout | undefined
     // Used for long tap only
@@ -77,7 +169,7 @@ export class FastSell extends Mod {
       }
     }
 
-    const minusOneKamaButton = new DTButton({
+    const minusOneKamaButton = new this.ButtonCreator({
       className: ['greenButton', 'mirage-minus-one-kama'],
       text: 'Venta Rápida',
       tooltip: 'Pon el objeto a la venta con el mismo precio'
@@ -210,7 +302,7 @@ export class FastSell extends Mod {
     const price =
       this.sellingSettingsWindow?.minPricesCache?.[this.sellingSettingsWindow?.item?.objectGID]?.[
         this.quantities.indexOf(this.currentSellingQuantity)
-        ]
+      ]
 
     return price ?? 1
   }
@@ -239,6 +331,31 @@ export class FastSell extends Mod {
     if (this.Debug) {
       console.log('- ' + this.ID + ' - ' + msg)
     }
+  }
+
+  waitSell(time = 300, offset = 0) {
+    return new Promise((resolve) => setTimeout(resolve, Math.random() * offset + time))
+  }
+
+  getSortedItems() {
+    return this.inventoryWindow.storageView._sortedItemList
+  }
+
+  createButton = () => {
+    setTimeout(() => {
+      if (!this.tradeWindow.bidHouseSellerBox) {
+        this.tradeWindow.once('open', this.createButton)
+      } else if (!this.tradeWindow.bidHouseSellerBox.isVisible()) {
+        this.tradeWindow.once('open', this.createButton)
+      } else if (this.button && this.tradeWindow.bidHouseSellerBox.isVisible()) {
+        this.created = true
+        this.tradeWindow.bidHouseSellerBox.rootElement.appendChild(this.button.rootElement)
+      }
+    }, 500)
+  }
+
+  getQtyItems(id: number): number {
+    return this.inventoryWindow.storageView.getDisplayedQuantity(id)
   }
 
   destroy(): void {

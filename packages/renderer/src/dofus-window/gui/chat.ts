@@ -17,4 +17,5 @@ export interface Chat {
       setValue: (value: string) => void
     }
   }
+  _logServerText: (msg: string, options?: any) => void
 }
