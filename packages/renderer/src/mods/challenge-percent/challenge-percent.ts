@@ -61,9 +61,9 @@ export class ChallengePercentMod extends Mod {
         const challengeText = document.createElement('div')
         challengeText.className = 'challPercentOnIconDetails'
         challengeText.innerHTML = '+' + msg.xpBonus + '%'
-        this.wGame.gui.challengeIndicator?.iconDetailsListByChallengeId?.[
-          msg.challengeId
-        ]?.icon?.rootElement.appendChild(challengeText)
+        this.wGame.gui.challengeIndicator?.challengesIcons?.[msg.challengeId]?.challengeIcon?.rootElement.appendChild(
+          challengeText
+        )
       }
     )
   }

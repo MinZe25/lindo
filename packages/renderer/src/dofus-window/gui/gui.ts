@@ -7,6 +7,7 @@ import { Scroller } from './scroller'
 import { TapBehavior } from './tap-behavior'
 import { GUIWindow } from './window'
 import { WuiDom } from './wui-dom'
+import { ChallengeInfoMessage } from '@/dofus-window'
 
 export type SlotEvents = {
   doubletap: () => void
@@ -39,7 +40,7 @@ export interface GUIDialog extends WuiDom {
 export interface ChallengeIcon {
   description: string
   details: unknown
-  icon: {
+  challengeIcon: {
     rootElement: HTMLDivElement
   }
   iconUrl: string
@@ -83,6 +84,7 @@ export type GUIEvents = {
   GameActionFightLifeAndShieldPointsLostMessage: () => void
   GameActionFightPointsVariationMessage: () => void
   ExchangeObjectAddedMessage: (msg: ExchangeObjectAddedMessage) => void
+  ChallengeInfoMessage: (msg: ChallengeInfoMessage) => void
 }
 
 export interface GUI extends TypedEmitter<GUIEvents> {
@@ -112,7 +114,7 @@ export interface GUI extends TypedEmitter<GUIEvents> {
     }
   }
   challengeIndicator: {
-    iconDetailsListByChallengeId: Record<number, ChallengeIcon>
+    challengesIcons: Record<number, ChallengeIcon>
     rootElement: {
       classList: {
         add: (className: string) => void
