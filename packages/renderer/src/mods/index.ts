@@ -18,6 +18,7 @@ import { ZaapSearchFilterMod } from './zaap-search-filter'
 import { RecipePrice } from './recipe-price'
 import { OffensiveMonsters } from '@/mods/ofensive monsters'
 import { DebugMessagesMod } from '@/mods/debug message helper'
+import { FastSell } from '@/mods/fast-sell'
 
 export * from './shortcuts'
 export * from './notifications'
@@ -52,5 +53,6 @@ export const MODS = [
   RecipePrice,
   OffensiveMonsters,
   DebugMessagesMod,
+  FastSell,
   ...GENERAL_MODS
 ] as const

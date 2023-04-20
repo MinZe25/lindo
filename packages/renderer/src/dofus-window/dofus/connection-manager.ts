@@ -146,6 +146,7 @@ export interface PartyLeaderUpdateMessage {}
 export interface ExchangeItemAddMessage {
   itemInfo: {
     objectPrice: number
+    quantity?: number
   }
 }
 
