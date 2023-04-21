@@ -48,22 +48,16 @@ export class FastSell extends Mod {
   }
 
   load() {
-    this.init()
-    this.initButton()
-    this.inventoryWindow = this.windowManager.getWindow('tradeInventory')
-    this.tradeWindow = this.windowManager.getWindow('tradeItem')
-    this.tradeStorageWindow = this.windowManager.getWindow('tradeStorage')
-    this.tradeWindow.once('open', this.createButton)
-    this.tradeWindow.on('open', this.onFirstOpenNeedResize)
-  }
-
-  init() {
     if (!this.initialized && this.canInit()) {
       this.addMinusOneKamaSellingButton()
       this.addLongTapEventOnSellButton()
-
       this.initialized = true
-      this.log('Enabled')
+      this.initButton()
+      this.inventoryWindow = this.windowManager.getWindow('tradeInventory')
+      this.tradeWindow = this.windowManager.getWindow('tradeItem')
+      this.tradeStorageWindow = this.windowManager.getWindow('tradeStorage')
+      this.tradeWindow.once('open', this.createButton)
+      this.tradeWindow.on('open', this.onFirstOpenNeedResize)
     }
   }
 
@@ -256,7 +250,6 @@ export class FastSell extends Mod {
         const price = this.currentItemPriceLotSettle
         const qty = this.currentSellingQuantity
         const uid = this.sellingSettingsWindow?.item?.objectUID
-        this.log('Try sell item ' + uid + ', qty: ' + qty + ', price: ' + price)
         if (!price || !qty || !uid) return
 
         this.wGame.dofus?.connectionManager?.once(
@@ -327,12 +320,6 @@ export class FastSell extends Mod {
     return this.sellingWindow?.bidHouseSellerBox
   }
 
-  log(msg: any) {
-    if (this.Debug) {
-      console.log('- ' + this.ID + ' - ' + msg)
-    }
-  }
-
   waitSell(time = 300, offset = 0) {
     return new Promise((resolve) => setTimeout(resolve, Math.random() * offset + time))
   }
@@ -365,6 +352,5 @@ export class FastSell extends Mod {
     if (this.evTradeOpenStd) tradingWindow?.removeListener('open', this.evTradeOpenStd)
 
     this.initialized = false
-    this.log('Disabled')
   }
 }
