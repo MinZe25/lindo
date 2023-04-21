@@ -190,6 +190,7 @@ export interface ExchangeBidhouseMinimumItemPriceListMessage {
 }
 
 export type ConnectionManagerEvents = {
+  ExchangeBidHouseBuyResultMessage: () => void
   ChallengeInfoMessage: (msg: ChallengeInfoMessage) => void
   GameFightEndMessage: (msg: GameFightEndMessage) => void
   GameFightStartMessage: () => void

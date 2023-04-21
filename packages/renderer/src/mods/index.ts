@@ -19,6 +19,7 @@ import { RecipePrice } from './recipe-price'
 import { OffensiveMonsters } from '@/mods/ofensive monsters'
 import { DebugMessagesMod } from '@/mods/debug message helper'
 import { FastSell } from '@/mods/fast-sell'
+import { FastBuy } from '@/mods/fast-buy'
 
 export * from './shortcuts'
 export * from './notifications'
@@ -54,5 +55,6 @@ export const MODS = [
   OffensiveMonsters,
   DebugMessagesMod,
   FastSell,
+  FastBuy,
   ...GENERAL_MODS
 ] as const
